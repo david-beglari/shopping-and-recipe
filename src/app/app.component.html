@@ -3,7 +3,8 @@
   <div class="row">
     <app-recipes *ngIf="loadedFeature == 'recipe'"></app-recipes>
     <app-shopping-list *ngIf="loadedFeature == 'shoppingList'"></app-shopping-list>
-    <p appBasicHighlight>grer gerg erge rg</p>
+    <p appBasicHighlight *appUnless="loadedFeature == 'recipe'">Not a good practice to directly access your elements</p>
+    <p appBetterHighlight [defaultColor]="'black'" [highlightColor]="'red'">Better because use renderer 2</p>
   </div>
 </div>
 
