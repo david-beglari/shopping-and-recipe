@@ -18,18 +18,9 @@ import {BetterHighlightDirective} from './highlight/better-highlight.directive';
 import { UnlessDirective } from './unless.directive';
 import { DropdownDirective } from './shared/dropdown.directive';
 import {ShoppingListService} from './shopping-list/shopping-list.service';
-import {RouterModule, Routes} from '@angular/router';
-
-const appRouts: Routes = [
-  {
-    path: 'shopping-list',
-    component: ShoppingListComponent
-  },
-  {
-    path: 'recipes',
-    component: RecipesComponent
-  }
-];
+import {AppRoutingModule} from './app-routing.module';
+import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
+import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 
 @NgModule({
   declarations: [
@@ -47,12 +38,14 @@ const appRouts: Routes = [
     BasicHighlightDirective,
     BetterHighlightDirective,
     UnlessDirective,
-    DropdownDirective
+    DropdownDirective,
+    RecipeStartComponent,
+    RecipeEditComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(appRouts)
+    AppRoutingModule
   ],
   providers: [ShoppingListService],
   bootstrap: [AppComponent]
