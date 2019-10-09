@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -7,14 +7,19 @@ import {NgForm} from '@angular/forms';
   styleUrls: ['./form-testing.component.css']
 })
 export class FormTestingComponent implements OnInit {
+  @ViewChild('f') singUpForm: NgForm;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  onSubmit(form: NgForm) {
+  /*onSubmit(form: NgForm) {
     console.log(form);
+  }*/
+
+  onSubmit() {
+    console.log(this.singUpForm);
   }
 
 }
