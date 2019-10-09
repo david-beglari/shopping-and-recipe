@@ -8,10 +8,17 @@ import {NgForm} from '@angular/forms';
 })
 export class FormTestingComponent implements OnInit {
   @ViewChild('f') singUpForm: NgForm;
+  private defaultEmail: string;
+  private answer: string;
+  private genders: any;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+    this.defaultEmail = 'good';
+    this.answer = 'My first answer';
+    this.genders = ['male', 'female'];
   }
 
   /*onSubmit(form: NgForm) {
