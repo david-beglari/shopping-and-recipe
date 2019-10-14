@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
-import {ok} from 'assert';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-form-testing',
@@ -29,10 +29,29 @@ export class FormTestingComponent implements OnInit {
     this.signUpForm = new FormGroup({
       userData: new FormGroup({
         username: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
-        email: new FormControl(null, [Validators.required, Validators.email]),
+        email: new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails),
       }),
       gender: new FormControl('male'),
       hobbies: new FormArray([])
+    });
+
+    this.signUpForm.valueChanges.subscribe((val) => {
+      console.log(val);
+    });
+
+    /*this.signUpForm.setValue({
+      userData: {
+        username: 'something',
+        email: 'ededede'
+      },
+      gender: 'ul',
+      hobbies: []
+    });*/
+
+    this.signUpForm.patchValue({
+      userData: {
+        username: 'update only this value'
+      }
     });
   }
 
@@ -49,7 +68,7 @@ export class FormTestingComponent implements OnInit {
   }
 
   onAddHobbies() {
-    (<FormArray> this.signUpForm.get('hobbies')).push(new FormControl(null, Validators.required));
+    (this.signUpForm.get('hobbies') as FormArray).push(new FormControl(null, Validators.required));
   }
 
   forbiddenNames(control: FormControl): { [s: string]: boolean } {
@@ -57,6 +76,20 @@ export class FormTestingComponent implements OnInit {
       return {nameIsForbidden: true};
     }
     return null;
+  }
+
+  forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (control.value === 'test@test.com') {
+          resolve({'emailIsForbidden': true});
+        } else {
+          resolve(null);
+        }
+      }, 1500);
+    });
+
+    return promise;
   }
 
 }
