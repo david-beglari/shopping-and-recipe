@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {ok} from 'assert';
 
 @Component({
   selector: 'app-form-testing',
@@ -7,10 +8,14 @@ import {NgForm} from '@angular/forms';
   styleUrls: ['./form-testing.component.css']
 })
 export class FormTestingComponent implements OnInit {
-  @ViewChild('f') singUpForm: NgForm;
+  @ViewChild('form', {static: false}) templateSingUpForm: NgForm;
   private defaultEmail: string;
   private answer: string;
   private genders: any;
+
+  // Reactive approach
+  signUpForm: FormGroup;
+  forbiddenUserNames: any;
 
   constructor() {
   }
@@ -19,6 +24,16 @@ export class FormTestingComponent implements OnInit {
     this.defaultEmail = 'good';
     this.answer = 'My first answer';
     this.genders = ['male', 'female'];
+    this.forbiddenUserNames = ['Chris', 'Anna'];
+
+    this.signUpForm = new FormGroup({
+      userData: new FormGroup({
+        username: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+        email: new FormControl(null, [Validators.required, Validators.email]),
+      }),
+      gender: new FormControl('male'),
+      hobbies: new FormArray([])
+    });
   }
 
   /*onSubmit(form: NgForm) {
@@ -26,7 +41,22 @@ export class FormTestingComponent implements OnInit {
   }*/
 
   onSubmit() {
-    console.log(this.singUpForm);
+    console.log(this.templateSingUpForm);
+  }
+
+  onSignUpForm() {
+    console.log(this.signUpForm);
+  }
+
+  onAddHobbies() {
+    (<FormArray> this.signUpForm.get('hobbies')).push(new FormControl(null, Validators.required));
+  }
+
+  forbiddenNames(control: FormControl): { [s: string]: boolean } {
+    if (this.forbiddenUserNames.indexOf(control.value) !== -1) {
+      return {nameIsForbidden: true};
+    }
+    return null;
   }
 
 }
