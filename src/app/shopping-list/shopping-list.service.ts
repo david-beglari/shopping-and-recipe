@@ -17,5 +17,15 @@ export class ShoppingListService {
     this.ingredients.push(ingredient);
     this.ingredientEventEmitter.next(this.ingredients.slice());
   }
+
+  updateIngredient(index: number, newIngredient: Ingredient) {
+    this.ingredients[index] = newIngredient;
+    this.ingredientEventEmitter.next(this.ingredients.slice());
+  }
+
+  deleteIngredients(index: number) {
+    this.ingredients.splice(index, 1);
+    this.ingredientEventEmitter.next(this.ingredients.slice());
+  }
 }
 
